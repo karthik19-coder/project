@@ -4,23 +4,38 @@ const darkBtn = document.getElementById("dark-mode");
 
 let currentAudio = null;
 
-// play sound on click
-buttons.forEach(btn => {
+buttons.forEach((btn) => {
   btn.addEventListener("click", () => {
     const soundFile = btn.dataset.sound; // "gtone.mp3" etc.
 
-    // stop old sound
+    // stop old audio (if playing)
     if (currentAudio) {
       currentAudio.pause();
       currentAudio.currentTime = 0;
     }
 
-    // IMPORTANT: no leading slash
-    currentAudio = new Audio("./" + soundFile);
-    currentAudio.volume = volumeSlider.value;
-    currentAudio.play();
+    // IMPORTANT: relative path, no leading "/"
+    const audio = new Audio("./" + soundFile);
+    audio.volume = volumeSlider.value;
 
-    // small animation
+    // if file can't be loaded, log reason
+    audio.addEventListener("error", () => {
+      console.error("Audio load error for:", soundFile, audio.error);
+    });
+
+    // play & CATCH promise errors so they are not "Uncaught"
+    audio
+      .play()
+      .then(() => {
+        // playing ok
+      })
+      .catch((err) => {
+        console.error("Audio play error:", err);
+      });
+
+    currentAudio = audio;
+
+    // small click animation
     btn.classList.add("playing");
     setTimeout(() => btn.classList.remove("playing"), 200);
   });
