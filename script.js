@@ -1,34 +1,42 @@
-let currentVolume = 1;
+const buttons = document.querySelectorAll(".sound");
+const volumeSlider = document.getElementById("volume");
+const darkBtn = document.getElementById("dark-mode");
 
-// Preload audio files for faster playback
-const audioFiles = {};
-document.querySelectorAll(".sound").forEach(btn => {
-  const file = btn.dataset.sound;
-  audioFiles[file] = new Audio("sounds/" + file);
-});
+let currentAudio = null;
 
-// Play sound + animation
-document.querySelectorAll(".sound").forEach(btn => {
+// play sound on click
+buttons.forEach(btn => {
   btn.addEventListener("click", () => {
-    const file = btn.dataset.sound;
-    const audio = audioFiles[file];
-    audio.volume = currentVolume;
+    const soundFile = btn.dataset.sound; // "gtone.mp3" etc.
 
-    audio.currentTime = 0; 
-    audio.play();
+    // stop old sound
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
+    }
 
-    // animation class
+    // IMPORTANT: no leading slash
+    currentAudio = new Audio("./" + soundFile);
+    currentAudio.volume = volumeSlider.value;
+    currentAudio.play();
+
+    // small animation
     btn.classList.add("playing");
     setTimeout(() => btn.classList.remove("playing"), 200);
   });
 });
 
-// Volume slider
-document.getElementById("volume").addEventListener("input", (e) => {
-  currentVolume = e.target.value;
+// volume control
+volumeSlider.addEventListener("input", () => {
+  if (currentAudio) {
+    currentAudio.volume = volumeSlider.value;
+  }
 });
 
-// Dark mode toggle
-document.getElementById("dark-mode").addEventListener("click", () => {
+// dark mode toggle
+darkBtn.addEventListener("click", () => {
   document.body.classList.toggle("dark");
+  darkBtn.textContent = document.body.classList.contains("dark")
+    ? "☀️ Light Mode"
+    : "🌙 Dark Mode";
 });
