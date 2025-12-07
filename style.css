@@ -1,0 +1,64 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background: #f0f0f0;
+  padding: 30px;
+  transition: background 0.3s, color 0.3s;
+}
+
+body.dark {
+  background: #111;
+  color: #eee;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+#dark-mode {
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+  border: none;
+  background: #222;
+  color: white;
+  border-radius: 8px;
+}
+
+.board {
+  margin: 20px auto;
+  width: 350px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.sound {
+  font-size: 45px;
+  padding: 25px;
+  background: white;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: 0.15s;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+.sound:active {
+  transform: scale(0.9);
+}
+
+body.dark .sound {
+  background: #222;
+  box-shadow: 0 3px 8px rgba(255, 255, 255, 0.15);
+}
+
+.sound.playing {
+  transform: scale(1.1);
+  background: #4caf50 !important;
+  color: white;
+}
+
+.controls {
+  margin-top: 25px;
+  font-size: 18px;
+}
